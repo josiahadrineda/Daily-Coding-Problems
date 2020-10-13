@@ -16,11 +16,11 @@ def shortest_word_transformation(start, end, words):
     if end not in words:
         return None
     else:
-        res = shortest_word_backtrack(start, end, words, [])
+        res = shortest_word_backtrack(start, end, words, [], [])
         if res:
             return [start] + res
 
-def shortest_word_backtrack(start, end, words, curr):
+def shortest_word_backtrack(start, end, words, curr, min_seq):
     if start == end:
         return curr
     else:
@@ -29,12 +29,16 @@ def shortest_word_backtrack(start, end, words, curr):
                 curr.append(word)
                 words.pop(ind)
 
-                res = shortest_word_backtrack(word, end, words, curr)
+                res = shortest_word_backtrack(word, end, words, curr, min_seq)
                 if res:
-                    return res
+                    if not min_seq:
+                        min_seq = res.copy()
+                    else:
+                        min_seq = min(min_seq, res, key=len)
 
                 curr.pop()
                 words.insert(ind, word)
+    return min_seq
 
 def is_valid(word1, word2):
     mismatches = 0
