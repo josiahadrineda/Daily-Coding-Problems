@@ -15,4 +15,14 @@ def max_triangle_path(triangle):
     """
     assert triangle, 'TRIANGLE cannot be an empty list.'
 
-    return sum([max(row) for row in triangle])
+    def max_triangle_path_recur(triangle, row, index, curr):
+        if row == len(triangle):
+            return curr
+        else:
+            l_index, r_index = index, index + 1
+            return max(
+                max_triangle_path_recur(triangle, row + 1, l_index, curr + [triangle[row][index]]),
+                max_triangle_path_recur(triangle, row + 1, r_index, curr + [triangle[row][index]])
+            )
+
+    return sum(max_triangle_path_recur(triangle, 0, 0, []))
