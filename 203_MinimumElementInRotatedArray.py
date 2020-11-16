@@ -4,9 +4,15 @@ def minimum_element(nums):
 
     **Note: All elements in nums are unique.**
 
+    >>> minimum_element([3, 4, 5, 7, 10])
+    3
+    >>> minimum_element([10, 3, 4, 5, 7])
+    3
+    >>> minimum_element([7, 10, 3, 4, 5])
+    3
     >>> minimum_element([5, 7, 10, 3, 4])
     3
-    >>> minimum_element([3, 4, 5, 7, 10])
+    >>> minimum_element([4, 5, 7, 10, 3])
     3
     """
     assert nums, 'NUMS cannot be an empty list.'
@@ -16,7 +22,7 @@ def minimum_element(nums):
         m = l + (r - l) // 2
         if nums[m] > nums[(m+1) % len(nums)]:
             return nums[(m+1) % len(nums)]
-        elif nums[m] >= nums[0]:
+        elif nums[m] >= nums[l]:
             l = m + 1
         else:
             r = m - 1
