@@ -1,6 +1,4 @@
-# Implemetation for Player vs. Bot
-# For future reference: Implement Player vs. Player
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+"""CONNECT 4 (Player vs. Bot AND Player vs. Player)"""
 
 from random import randint
 from time import sleep
@@ -255,18 +253,30 @@ class Board:
         return self.contents[0][c] != '-'
 
 class Game:
-    # Change board size and player markers here
-    def __init__(self, n=8, p1_marker='@', p2_marker='0'):
+    # Change game_mode, board size, and player markers here
+    def __init__(self, game_mode='pve', n=8, p1_marker='@', p2_marker='0'):
+        assert game_mode in ('pve', 'pvp'), 'Invalid game mode. Please choose \'pve\' or \'pvp\' game mode.'
+        
         self.bo = Board(n)
         
-        self.player = Player(self, p1_marker)
-        self.bot = Bot(self, p2_marker, p1_marker)
+        if game_mode == 'pve':
+            self.p1 = Player(self, p1_marker)
+            self.p2 = Bot(self, p2_marker, p1_marker)
 
-        self.win_or_tie_msg = {
-            "P1": "Congratulations! You have won!",
-            "P2": f"Unfortunately, you have lost to Bot {self.bot.name}...",
-            "T": "OOF! Close call, but no winner!"
-        }
+            self.win_or_tie_msg = {
+                "P1": "Congratulations! You have won!",
+                "P2": f"Unfortunately, you have lost to Bot {self.p2.name}...",
+                "T": "OOF! Close call, but no winner!"
+            }
+        elif game_mode == 'pvp':
+            self.p1 = Player(self, p1_marker)
+            self.p2 = Player(self, p2_marker)
+
+            self.win_or_tie_msg = {
+                "P1": "Congratulations! Player 1 has won!",
+                "P2": "Congratulations! Player 2 has won!",
+                "T": "OOF! Close call, but no winner!"
+            }
 
     def is_winner(self):
         def check_winner(marker, contents):
@@ -313,9 +323,9 @@ class Game:
         def check_tie(contents):
             return all([all([cell != '-' for cell in row]) for row in contents])
 
-        if check_winner(self.player.marker, self.bo.contents):
+        if check_winner(self.p1.marker, self.bo.contents):
             return 'P1'
-        elif check_winner(self.bot.marker, self.bo.contents):
+        elif check_winner(self.p2.marker, self.bo.contents):
             return 'P2'
         elif check_tie(self.bo.contents):
             return 'T'
@@ -325,7 +335,7 @@ class Game:
         self.bo.print_board()
 
         while True:
-            self.player.take_turn()
+            self.p1.take_turn()
             self.bo.print_board()
             win_or_tie = self.is_winner()
             if win_or_tie:
@@ -334,7 +344,7 @@ class Game:
 
             sleep(0.5)
 
-            self.bot.take_turn()
+            self.p2.take_turn()
             self.bo.print_board()
             win_or_tie = self.is_winner()
             if win_or_tie:
