@@ -60,18 +60,33 @@ class Player(Entity):
         self.place_marker(bo, c, self.marker)
 
 class Bot(Entity):
-    # Change Bot difficulty here
+    # Change Bot difficulty here. Choose between 'braindead' and 'brainbig' mode
     def __init__(self, game, marker, enemy_marker, difficulty='brainbig'):
         self.game = game
 
         # We need to keep track of both markers for simulating the game (minimax)
         self.marker = marker
         self.enemy_marker = enemy_marker
-        self.name = self.generate_name()
         self.difficulty = difficulty
+        self.name = self.generate_name(self.difficulty)
 
-    def generate_name(self):
-        names = [
+    def generate_name(self, difficulty):
+        assert difficulty in ('braindead', 'brainbig'), 'Invalid difficulty. Please choose \'braindead\' or \'brainbig\' mode.'
+
+        BRAINDEAD_NAMES = [
+            'Larmon',
+            'Hug\'chu',
+            'Hel\'nupo',
+            'Wuh\'gajar',
+            'Kul\'zaehe',
+            'Xogijuk',
+            'Paeg\'thon',
+            'Ruzkulan',
+            'Xaig\'shosh',
+            'Rhur\'nen'
+        ]
+
+        BRAINBIG_NAMES = [
             'Rowland Cotton',
             'Iram Earle',
             'Jerrit Charlton',
@@ -84,9 +99,14 @@ class Bot(Entity):
             'Lindon Eastoft'
         ]
 
-        n = len(names)
-        rand_ind = randint(0, n - 1)
-        return names[rand_ind]
+        if difficulty == 'braindead':
+            n = len(BRAINDEAD_NAMES)
+            rand_ind = randint(0, n - 1)
+            return BRAINDEAD_NAMES[rand_ind]
+        elif difficulty == 'brainbig':
+            n = len(BRAINBIG_NAMES)
+            rand_ind = randint(0, n - 1)
+            return BRAINBIG_NAMES[rand_ind]
 
     def choose_random(self):
         bo = self.game.bo
@@ -100,7 +120,7 @@ class Bot(Entity):
     def choose_minimax(self):
         bo = self.game.bo
 
-        # Change foresight (number of moves Bot can "see" ahead) here
+        # Change foresight (number of moves Bot can "see" ahead) here. I suggest not going above 4
         def minimax(game, foresight=3, alpha=float('-inf'), beta=float('inf'), is_max=True):
             state = game.is_winner()
             if state == 'P1':
