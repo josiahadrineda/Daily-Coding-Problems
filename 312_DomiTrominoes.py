@@ -1,3 +1,5 @@
+# https://leetcode.com/problems/domino-and-tromino-tiling/discuss/116664/Schematic-explanation-of-two-equivalent-DP-recurrence-formula
+
 def domitrominoes(n):
     """Given an empty 2xN board, where N is a positive integer, determines the total
     number of ways one can completely fill the board with dominoes
