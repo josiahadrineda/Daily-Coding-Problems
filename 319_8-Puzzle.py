@@ -178,6 +178,6 @@ class N_Puzzle:
 
 np = N_Puzzle(3)
 # Omit if want to test on a random starting state
-start = Board(3, [['1', '3', '2'], ['5', '4', '_'], ['7', '8', '6']])
+start = Board(3, [['1', '2', '5'], ['8', '_', '3'], ['6', '7', '4']])
 goal = Board(3, [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '_']])
 np.solve(goal, start=start)
