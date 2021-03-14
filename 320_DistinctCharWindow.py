@@ -10,10 +10,14 @@ def distinct_char_window(s):
     """Given a string S, computes the length of the smallest window that contains
     every distinct character in S.
 
+    >>> distinct_char_window('www')
+    1
     >>> distinct_char_window('jiujitsu')
     5
     >>> distinct_char_window('aaabbbccc')
     5
+    >>> distinct_char_window('thiccccccccccck')
+    15
     """
     assert s, 'S cannot be an empty string.'
 
@@ -35,4 +39,4 @@ def distinct_char_window(s):
             recent_chars[s[i]] = i
             i += 1
         i += 1
-    return res
+    return res if res != float('inf') else n
